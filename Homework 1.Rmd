@@ -1,0 +1,110 @@
+---
+title: "Homework 1"
+output:
+  html_document: default
+  html_notebook: default
+---
+#Ethan King
+
+### Question 1
+
+```{r}
+
+library(ggplot2)
+
+set.seed(123)
+
+n = 100
+x = 1:n/(n+1)
+
+beta0 = 10
+beta1 = 2
+
+expy = beta0 + beta1*x
+
+mu = 0.0
+
+sigma1 = 2.7
+err1 = rnorm(n, mu, sigma1)
+yobs1 = expy + err1
+p1 = qplot(x,yobs1)
+p1 = p1 + geom_abline( intercept = beta0, slope = beta1)
+p1
+
+```
+
+Our first plot is a simulation of the observed occurences of y with a std dev of 2.7. Using the empirical rule, 68% of our observations will fall within expy (expected value of y) +- 2.7, 95% of our observations will fall withing expy +- 5.4, and 99.7% of our observations will fall within expy +- 8.1.
+
+```{r}
+cor(x, yobs1)
+```
+
+Given our range of x and the observed values of y with std dev = 2.7, the correlation between X and Y is rather low at 0.3. These observed data points suggest x isn't a good predictor of y.
+
+```{r}
+sigma2 = 0.7
+err2 = rnorm(n, mu, sigma2)
+yobs2 = expy + err2
+p2 = qplot(x,yobs2)
+p2 = p2 + geom_abline( intercept = beta0, slope = beta1)
+p2
+```
+
+Our second plot is a simulation of the observed occurences of y with a std dev of 0.7. Using the empirical rule, 68% of our observations will fall within expy (expected value of y) +- 0.7, 95% of our observations will fall withing expy +- 1.4, and 99.7% of our observations will fall within expy +- 2.1.
+
+```{r}
+cor(x,yobs2)
+```
+
+Given our range of x and the observed values of y with std dev = 0.7, the correlation between X and Y is higher than the correlation of plot 1, with a correlation of 0.7. With a lower standard devation in our observed occurences of y, x becomes a better predictor of y.
+
+```{r}
+sigma3 = 0.27
+err3 = rnorm(n, mu, sigma3)
+yobs3 = expy + err3
+p3 = qplot(x,yobs3)
+p3 = p3 + geom_abline( intercept = beta0, slope = beta1)
+p3
+```
+
+Our third plot is a simulation of the observed occurences of y with a std dev of 0.27. Using the empirical rule, 68% of our observations will fall within expy (expected value of y) +- 0.27, 95% of our observations will fall withing expy +- 0.54, and 99.7% of our observations will fall within expy +- 0.81.
+
+```{r}
+cor(x,yobs3)
+```
+
+With an even smaller std dev of 0.27, the correlation between X and Y increases to 0.9.In this third case, x is an even better predictor of y.
+
+###Question 2
+
+```{r}
+sigma4 = 2.7
+x2 = seq(10,80,0.1)
+expy2 = beta0 + beta1*x2
+err4 = rnorm(701, mu, sigma4)
+yobs4 = expy2 + err4
+p4 = qplot(x2,yobs4)
+p4 = p4 + geom_abline( intercept = beta0, slope = beta1)
+p4
+```
+
+The fourth plot has the same std dev, y intercept, and slope as the first plot, but the range of x is extended from a range of 1 to a range of 70, so the observations are more tightly grouped around the expected value of y. Using the empirical rule, 68% of our observations will fall within expy (expected value of y) +- 2.7, 95% of our observations will fall withing expy +- 5.4, and 99.7% of our observations will fall within expy +- 8.1.
+
+```{r}
+cor(x2,yobs4)
+```
+
+The standard deviation of plot 4 is the same as the standard devation of plot 1, but given the larger range of x, and the expected values of y, the std dev is smaller relative to the size of x. The result is a very high correlation of 0.99 between x and observed y and in this case x is the best predictor of y.
+
+
+### All of our plots, side by side.
+```{r}
+library(grid)
+library(gridExtra)
+grid.arrange(p1, p2, p3, p4,
+             ncol = 2, 
+             top = "Plots with different error variances")
+
+
+```
+
